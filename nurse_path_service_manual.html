@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurse Path+ サービス利用マニュアル</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #4072B3;
+            --secondary-blue: #6088C6;
+            --light-blue: #AEC4E5;
+            --accent-pink: #EB8686;
+            --neutral-gray: #C0C0C0;
+            --white: #FFFFFF;
+            --text-dark: #2c3e50;
+            --text-light: #666666;
+            --shadow: 0 4px 6px rgba(64, 114, 179, 0.1);
+            --shadow-hover: 0 8px 15px rgba(64, 114, 179, 0.2);
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Yu Gothic Medium', 'Meiryo', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--light-blue) 0%, var(--white) 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="3" fill="rgba(255,255,255,0.05)"/><circle cx="40" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .header h1 {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header p {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-section {
+            background: var(--white);
+            padding: 40px 0;
+            border-bottom: 1px solid rgba(64, 114, 179, 0.1);
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 24px;
+            border: 2px solid var(--light-blue);
+            border-radius: 50px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 4px rgba(64, 114, 179, 0.1);
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-hover);
+            margin-top: 8px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 16px 24px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(64, 114, 179, 0.05);
+            transition: background 0.2s ease;
+        }
+
+        .search-result-item:hover {
+            background: rgba(64, 114, 179, 0.05);
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .nav-section {
+            background: var(--white);
+            padding: 40px 0;
+            border-bottom: 1px solid rgba(64, 114, 179, 0.1);
+        }
+
+        .nav-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .nav-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(64, 114, 179, 0.05), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-card:hover::before {
+            left: 100%;
+        }
+
+        .nav-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--light-blue);
+        }
+
+        .nav-card.active {
+            border-color: var(--primary-blue);
+            background: linear-gradient(135deg, rgba(64, 114, 179, 0.05) 0%, var(--white) 100%);
+        }
+
+        .nav-card-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .nav-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 8px;
+        }
+
+        .nav-card-desc {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .content {
+            background: var(--white);
+            padding: 60px 0;
+        }
+
+        .service-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .service-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .service-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .service-title {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: var(--primary-blue);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .service-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .highlight-banner {
+            background: linear-gradient(135deg, var(--accent-pink) 0%, #d16ba5 100%);
+            color: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(64, 114, 179, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--primary-blue);
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .card-list {
+            list-style: none;
+        }
+
+        .card-list li {
+            padding: 8px 0;
+            position: relative;
+            padding-left: 24px;
+            color: var(--text-dark);
+        }
+
+        .card-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary-blue);
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .link-button {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin: 8px 4px;
+            box-shadow: var(--shadow);
+        }
+
+        .link-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+            color: var(--white);
+        }
+
+        .link-button.secondary {
+            background: linear-gradient(135deg, var(--accent-pink) 0%, #d16ba5 100%);
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin: 30px 0;
+        }
+
+        .info-table th {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            padding: 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .info-table td {
+            padding: 20px;
+            border-bottom: 1px solid rgba(64, 114, 179, 0.1);
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .info-table tr:hover {
+            background: rgba(64, 114, 179, 0.02);
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, var(--accent-pink) 0%, #d16ba5 100%);
+            color: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .contact-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .contact-section p {
+            margin-bottom: 24px;
+            opacity: 0.9;
+        }
+
+        .faq-section {
+            margin-top: 60px;
+        }
+
+        .faq-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .faq-category {
+            background: var(--white);
+            border: 2px solid var(--light-blue);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .faq-category:hover, .faq-category.active {
+            border-color: var(--primary-blue);
+            background: rgba(64, 114, 179, 0.05);
+        }
+
+        .faq-items {
+            display: none;
+        }
+
+        .faq-items.active {
+            display: block;
+        }
+
+        .faq-item {
+            background: var(--white);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-blue);
+            border-bottom: 1px solid rgba(64, 114, 179, 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(64, 114, 179, 0.05);
+        }
+
+        .faq-answer {
+            padding: 20px;
+            display: none;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        .breadcrumb {
+            background: rgba(64, 114, 179, 0.05);
+            padding: 16px 0;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .breadcrumb .current {
+            color: var(--primary-blue);
+            font-weight: 600;
+        }
+
+        .floating-help {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+            color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-hover);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-decoration: none;
+            font-size: 1.5rem;
+        }
+
+        .floating-help:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(64, 114, 179, 0.3);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 0;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .nav-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .search-section {
+                padding: 20px 0;
+            }
+
+            .content {
+                padding: 40px 0;
+            }
+
+            .service-header {
+                margin-bottom: 40px;
+            }
+
+            .floating-help {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .info-table {
+                font-size: 0.9rem;
+            }
+
+            .info-table th,
+            .info-table td {
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>📚 Nurse Path+ サービス利用マニュアル</h1>
+            <p>既存顧客の皆様へ - 全サービスの利用方法をまとめました</p>
+        </div>
+    </header>
+
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="サービスを検索..." id="searchInput">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="nav-section">
+        <div class="container">
+            <div class="nav-grid" id="navGrid">
+                <!-- Navigation cards will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <div class="breadcrumb">
+        <div class="container">
+            <span class="current" id="currentPage">概要</span> / Nurse Path+ サービスガイド
+        </div>
+    </div>
+
+    <main class="content">
+        <div class="container">
+            <!-- Overview Section -->
+            <div class="service-content active" id="overview">
+                <div class="service-header">
+                    <h2 class="service-title">🌟 Nurse Path+ サービス概要</h2>
+                    <p class="service-subtitle">あなたの看護師への道を全力でサポート</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number">90%+</span>
+                        <span class="stat-label">合格率（8年連続達成）</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">800+</span>
+                        <span class="stat-label">サポート実績</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">22名</span>
+                        <span class="stat-label">現役看護師チーム</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">91%</span>
+                        <span class="stat-label">利用者満足度</span>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">🎯 Nurse Path+の特徴</h3>
+                        <ul class="card-list">
+                            <li>現役看護師による親身なサポート</li>
+                            <li>24時間365日いつでも相談可能</li>
+                            <li>個別学習プランの作成</li>
+                            <li>仲間と一緒に学べる環境</li>
+                            <li>実習から国試まで総合サポート</li>
+                            <li>全員看護師チームで構成</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">📚 学習サポート体制</h3>
+                        <ul class="card-list">
+                            <li>毎日の国家試験問題配信</li>
+                            <li>月3回のZOOM勉強会</li>
+                            <li>40本以上の講義動画見放題</li>
+                            <li>いつでも利用できる自習室</li>
+                            <li>月1回の個別コンサルティング</li>
+                            <li>専門資格講師による特別講義</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="contact-section">
+                    <h3>📱 困った時はすぐに連絡！</h3>
+                    <p>あなたのそばで、いつでもサポートしています</p>
+                    <a href="https://lin.ee/xrvE6PC" class="link-button">公式LINE</a>
+                </div>
+            </div>
+
+            <!-- LINE Support Section -->
+            <div class="service-content" id="line-support">
+                <div class="service-header">
+                    <h2 class="service-title">📱 24時間365日LINEサポート</h2>
+                    <p class="service-subtitle">Nurse Path+のコアサービス</p>
+                </div>
+
+                <div class="highlight-banner">
+                    ⭐ 現役看護師と24時間いつでもLINEで相談できる深掘りサポート！
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">🎯 LINEサポートの主な活用方法</h3>
+                        <ul class="card-list">
+                            <li>1日1問1答の質問・回答</li>
+                            <li>実習での相談・悩み</li>
+                            <li>勉強方法がわからない時</li>
+                            <li>看護に関する疑問・質問</li>
+                            <li>急に不安になった時のサポート</li>
+                            <li>モチベーション維持のための相談</li>
+                            <li>アセスメント指導</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">🔥 深掘りサポートの特徴</h3>
+                        <ul class="card-list">
+                            <li>どんどん深掘りしていくコアサービス</li>
+                            <li>一つの質問から派生する疑問も徹底サポート</li>
+                            <li>理解できるまで何度でも質問OK</li>
+                            <li>現役看護師による実践的なアドバイス</li>
+                            <li>22名の看護師チームが交代制でサポート</li>
+                            <li>認定看護師・特定行為研修修了者も在籍</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">💡 利用方法</h3>
+                    <p>下のボタンから公式LINEに登録するだけ！すぐに深掘りサポートを受けられます。</p>
+                    <br>
+                    <a href="https://lin.ee/xrvE6PC" class="link-button">📲 公式LINE登録</a>
+                </div>
+            </div>
+
+            <!-- Daily Quiz Section -->
+            <div class="service-content" id="daily-quiz">
+                <div class="service-header">
+                    <h2 class="service-title">📝 1日1問1答サービス</h2>
+                    <p class="service-subtitle">毎日コツコツ継続学習</p>
+                </div>
+
+                <div class="highlight-banner">
+                    📅 毎日コツコツ続けることで、確実に実力がアップ！継続は力なり！
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">📚 毎日お届けする内容</h3>
+                        <ul class="card-list">
+                            <li>厳選された国家試験問題</li>
+                            <li>わかりやすい解説付き</li>
+                            <li>勉強会の最新情報</li>
+                            <li>重要なお知らせ・広報連絡</li>
+                            <li>全体での学習進捗共有</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">👥 仲間と一緒に学習</h3>
+                        <p>オープンチャットで他の学習者と交流しながら、モチベーションを維持できます。</p>
+                        <ul class="card-list">
+                            <li>同じ目標を持つ仲間との交流</li>
+                            <li>質問や疑問をシェア</li>
+                            <li>学習の励ましあい</li>
+                        </ul>
+                        <a href="https://line.me/ti/g2/vvQ09NkknmZ5qpKVtrmiya5iXUGzJaDqAZvGKQ" class="link-button">👥 オープンチャット参加</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consultation Section -->
+            <div class="service-content" id="consultation">
+                <div class="service-header">
+                    <h2 class="service-title">🎯 個別面談システム</h2>
+                    <p class="service-subtitle">あなた専用の学習プラン作成</p>
+                </div>
+
+                <div class="highlight-banner">
+                    365日面談サポート可能！22名の看護師チームが交代制で対応
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">⏰ 基本情報</h3>
+                        <ul class="card-list">
+                            <li>365日面談サポート可能</li>
+                            <li>現役看護師との面談</li>
+                            <li>毎月30日にスケジュール更新</li>
+                            <li>認定看護師・特定行為研修修了者も対応</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">💰 料金体系（2025年改訂版）</h3>
+                        <p><strong>🆓 無料面談対象</strong></p>
+                        <ul class="card-list">
+                            <li>Nursepath生：月1回30分まで無料</li>
+                            <li>NURSE WELLNESS生：月1回30分まで無料</li>
+                        </ul>
+                        <p><strong>💰 有料面談対象</strong></p>
+                        <ul class="card-list">
+                            <li>じっくり学習コース：30分1,500円</li>
+                            <li>かんたんチャットコース：30分1,500円</li>
+                            <li>学びのオールインワンコース：30分1,500円</li>
+                            <li>その他AIサービス利用者：30分1,500円</li>
+                        </ul>
+                        <a href="https://liff.line.me/1661464295-gq06np84?calendar_salon_id=2787&ts=1748322247" class="link-button">📅 面談予約</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">🔄 延長・追加面談料金（全コース共通）</h3>
+                    <table class="info-table">
+                        <thead>
+                            <tr>
+                                <th>予約タイミング</th>
+                                <th>顧客料金</th>
+                                <th>備考</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>3日前まで</td>
+                                <td>1,500円</td>
+                                <td>追加料金なし</td>
+                            </tr>
+                            <tr>
+                                <td>2日前</td>
+                                <td>1,725円</td>
+                                <td>通常料金+15%</td>
+                            </tr>
+                            <tr>
+                                <td>前日</td>
+                                <td>1,800円</td>
+                                <td>通常料金+20%</td>
+                            </tr>
+                            <tr>
+                                <td>当日</td>
+                                <td>1,875円</td>
+                                <td>通常料金+25%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Study Sessions Section -->
+            <div class="service-content" id="study-sessions">
+                <div class="service-header">
+                    <h2 class="service-title">🎓 ZOOM勉強会（月3回開催）</h2>
+                    <p class="service-subtitle">仲間と一緒に学ぶグループ学習</p>
+                </div>
+
+                <div class="highlight-banner">
+                    ⚠️ 重要：参加・不参加の回答は必須です！人数把握のためご協力をお願いします。
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">📅 開催スケジュール詳細</h3>
+                        <ul class="card-list">
+                            <li>開催日：金・土・日のいずれか</li>
+                            <li>頻度：月3回程度開催</li>
+                            <li>平日・土曜：21:00開始</li>
+                            <li>日曜：8:00開始</li>
+                            <li>皆様のアンケート結果をもとに日程決定</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">📋 参加確認の流れ</h3>
+                        <ul class="card-list">
+                            <li>オープンチャットのイベント欄で確認</li>
+                            <li>参加・不参加を必ず入力してください</li>
+                            <li>人数把握のため重要です</li>
+                            <li>当日にZOOMリンクをお送りします</li>
+                            <li>開催日決定はアンケート結果で決まります</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">📹 過去の勉強会を復習</h3>
+                        <p>見逃した回や復習したい内容は、オープンチャットの「ノート」から確認できます。</p>
+                        <ul class="card-list">
+                            <li>確認方法：オープンチャット → 「ノート」タブ</li>
+                            <li>過去の配信動画を視聴可能</li>
+                            <li>復習や見逃した回もバッチリサポート</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">💬 勉強会後のお願い</h3>
+                        <p>勉強会後は「つぶやき部屋」で感想をお聞かせください。アウトプットも大切な学習です。</p>
+                        <ul class="card-list">
+                            <li>感想を自由に投稿してください</li>
+                            <li>アウトプットの練習にもなります</li>
+                            <li>かず学長の思いやラジオ配信も視聴可能</li>
+                            <li>何でも自由につぶやいてOK！</li>
+                        </ul>
+                        <a href="https://line.me/ti/g2/SrwlPvoHSAYjHqQpO5yaEzt76Io1CFQ5Tk-6Kw" class="link-button">💬 つぶやき部屋</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">💰 勉強会参加料金</h3>
+                    <p><strong>プレミアムコース：</strong>無料で参加可能</p>
+                    <p><strong>その他のコース：</strong>1回5,000円で参加可能</p>
+                </div>
+            </div>
+
+            <!-- AI Chat Section -->
+            <div class="service-content" id="ai-chat">
+                <div class="service-header">
+                    <h2 class="service-title">🤖 看護AIチャットボット</h2>
+                    <p class="service-subtitle">24時間利用可能な追加オプション</p>
+                </div>
+
+                <div class="highlight-banner">
+                    🧠 看護学に特化したAIが、24時間いつでもあなたの質問にお答えします！
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">🎯 AIチャットでできること</h3>
+                        <ul class="card-list">
+                            <li>看護学に関する質問への即時回答</li>
+                            <li>解剖学・生理学の詳しい解説</li>
+                            <li>病態生理の理解サポート</li>
+                            <li>看護技術の手順確認</li>
+                            <li>国家試験対策の質問</li>
+                            <li>24時間いつでも利用可能</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">💰 追加オプションサービス</h3>
+                        <p><strong>月額500円</strong>で利用可能な追加サービスです</p>
+                        <ul class="card-list">
+                            <li>基本サービスに追加で利用可能</li>
+                            <li>LINEサポートと併用できます</li>
+                            <li>即座に回答が得られます</li>
+                            <li>復習や予習に最適</li>
+                        </ul>
+                        <p>詳しい利用方法は公式LINEでご確認ください。</p>
+                        <a href="https://lin.ee/xrvE6PC" class="link-button">詳細を確認</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Section -->
+            <div class="service-content" id="content">
+                <div class="service-header">
+                    <h2 class="service-title">📚 講義動画・資料見放題</h2>
+                    <p class="service-subtitle">40本以上の豊富なコンテンツ</p>
+                </div>
+
+                <div class="highlight-banner">
+                    📺 40本以上の講義動画と豊富な資料が見放題！いつでもどこでも学習できます。
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">📖 利用できるコンテンツ</h3>
+                        <ul class="card-list">
+                            <li>解剖学・生理学講義動画（40本以上）</li>
+                            <li>実習・授業で役立つ資料集</li>
+                            <li>オンラインブック（電子書籍）</li>
+                            <li>看護技術の解説動画</li>
+                            <li>国家試験対策コンテンツ</li>
+                            <li>24時間いつでもアクセス可能</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">🔑 アクセス方法</h3>
+                        <p>専用サイトへのアクセスに必要なパスワードは、オープンチャットのアナウンス部分で確認できます。</p>
+                        <ul class="card-list">
+                            <li>オープンチャット「Nurse Path+」を確認</li>
+                            <li>アナウンス部分でパスワードを取得</li>
+                            <li>専用サイトにアクセス</li>
+                            <li>スマホ・PC・タブレットで視聴可能</li>
+                        </ul>
+                        <p><strong>パスワード：</strong>nurse</p>
+                        <a href="https://www.nurse-kazu.com/konntenntu-2/" class="link-button">📚 コンテンツサイト</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Files Section -->
+            <div class="service-content" id="quiz-files">
+                <div class="service-header">
+                    <h2 class="service-title">📋 国試厳選問題ファイル</h2>
+                    <p class="service-subtitle">月1回配信の問題集</p>
+                </div>
+
+                <div class="highlight-banner">
+                    📊 毎月1回、国家試験対策に厳選された問題集をPowerPointで配信！
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">📧 配信について</h3>
+                        <ul class="card-list">
+                            <li>毎月1回必ず配信されます</li>
+                            <li>PowerPointファイル形式で提供</li>
+                            <li>国家試験対策に厳選された問題</li>
+                            <li>解説付きで理解しやすい</li>
+                            <li>スマホ・PC・タブレットで利用可能</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">🎯 問題ファイルの特徴</h3>
+                        <ul class="card-list">
+                            <li>過去の国家試験から厳選</li>
+                            <li>出題頻度の高い重要問題</li>
+                            <li>最新の試験傾向を反映</li>
+                            <li>分野別に整理された構成</li>
+                            <li>解答・解説付きで自己学習に最適</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Study Room Section -->
+            <div class="service-content" id="study-room">
+                <div class="service-header">
+                    <h2 class="service-title">🏠 オンライン自習室</h2>
+                    <p class="service-subtitle">24時間利用可能な集中学習空間</p>
+                </div>
+
+                <div class="contact-section" style="background: linear-gradient(135deg, var(--accent-pink) 0%, #d16ba5 100%); margin-bottom: 20px;">
+                    <h3>⚠️ 重要なお願い</h3>
+                    <p><strong>自習室を利用する前に、必ず「かず学長のつぶやき部屋」で一言「自習室使います」とお声がけください！</strong></p>
+                    <a href="https://line.me/ti/g2/SrwlPvoHSAYjHqQpO5yaEzt76Io1CFQ5Tk-6Kw" class="link-button">💬 つぶやき部屋で挨拶</a>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">🔗 入室情報</h3>
+                        <p><strong>部屋番号：</strong>5688610949</p>
+                        <p><strong>パスワード：</strong>147359</p>
+                        <a href="https://us02web.zoom.us/j/5688610949?pwd=T1BLMzdZM2RwUklhL2VaazBubmlJQT09" class="link-button">🏠 自習室に入る</a>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">📚 活用方法</h3>
+                        <ul class="card-list">
+                            <li>他の学生と一緒に勉強</li>
+                            <li>1人で集中して学習</li>
+                            <li>24時間いつでも利用OK</li>
+                            <li>利用前は必ずつぶやき部屋で挨拶</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">📝 利用の流れ</h3>
+                    <ul class="card-list">
+                        <li>①「つぶやき部屋」で「自習室使います」と投稿</li>
+                        <li>② ZOOMリンクから自習室に入室</li>
+                        <li>③ 集中して学習開始！</li>
+                        <li>④ 終了時もつぶやき部屋で報告推奨</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Events Section -->
+            <div class="service-content" id="events">
+                <div class="service-header">
+                    <h2 class="service-title">👩‍⚕️ 専門イベント</h2>
+                    <p class="service-subtitle">認定看護師による特別講義</p>
+                </div>
+
+                <div class="highlight-banner">
+                    🏆 認定看護師など専門資格を持つ講師による特別講義！現場の実践的な知識を学べます。
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">🏆 講師陣の豊富な専門資格</h3>
+                        <ul class="card-list">
+                            <li>認定看護師（感染管理認定看護師）</li>
+                            <li>認定看護師（嚥下認定看護師）</li>
+                            <li>臨床心理カウンセラー</li>
+                            <li>特定行為研修修了者</li>
+                            <li>教育学精通者</li>
+                            <li>その他専門分野のエキスパート</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">📚 学べる特別講義の内容</h3>
+                        <ul class="card-list">
+                            <li>感染管理の実践的ノウハウ</li>
+                            <li>嚥下機能評価の実際</li>
+                            <li>心理的サポートの技術</li>
+                            <li>特定行為の実務知識</li>
+                            <li>効果的な学習方法論</li>
+                            <li>現場での実践経験の共有</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">📅 スケジュール確認方法</h3>
+                    <p>毎月月末（30日頃）に新しいスケジュール表をお渡しします。専門講師の貴重な講義をお見逃しなく！</p>
+                    <ul class="card-list">
+                        <li>毎月30日頃にスケジュール更新</li>
+                        <li>オープンチャットで詳細案内</li>
+                        <li>事前予約が必要な場合があります</li>
+                        <li>録画配信も行う場合があります</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Apps Section -->
+            <div class="service-content" id="apps">
+                <div class="service-header">
+                    <h2 class="service-title">💻 開発中アプリ（ベータ版）</h2>
+                    <p class="service-subtitle">看護学生・看護師に役立つアプリを開発中</p>
+                </div>
+
+                <div class="highlight-banner">
+                    🔧 看護学生・看護師に役立つ様々なアプリを開発中です！パソコンでの利用を推奨しています。
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h3 class="card-title">🚀 開発中のアプリ例</h3>
+                        <ul class="card-list">
+                            <li>検査データアプリ</li>
+                            <li>心電図アプリ</li>
+                            <li>血液ガスアプリ</li>
+                            <li>Online Tube & Books</li>
+                            <li>検査データフラッシュアプリ</li>
+                            <li>点滴計算アプリ</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3 class="card-title">📱 利用について</h3>
+                        <p>たくさんのアプリを開発中です。詳細は公式LINEで確認してください。</p>
+                        <ul class="card-list">
+                            <li>現在ベータ版として提供中</li>
+                            <li>パソコンでの利用推奨</li>
+                            <li>随時新しいアプリを追加</li>
+                            <li>フィードバック歓迎</li>
+                        </ul>
+                        <a href="https://lin.ee/xrvE6PC" class="link-button">📱 アプリ詳細を確認</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Links Section -->
+            <div class="service-content" id="links">
+                <div class="service-header">
+                    <h2 class="service-title">🔗 重要なリンク一覧</h2>
+                    <p class="service-subtitle">各サービスへの直接アクセス</p>
+                </div>
+
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>🎯 サービス</th>
+                            <th>📲 リンク</th>
+                            <th>📝 備考</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>📱 公式LINE</td>
+                            <td><a href="https://lin.ee/xrvE6PC" class="link-button">アクセス</a></td>
+                            <td>24時間サポート・各種相談</td>
+                        </tr>
+                        <tr>
+                            <td>👥 オープンチャット「Nurse Path+」</td>
+                            <td><a href="https://line.me/ti/g2/vvQ09NkknmZ5qpKVtrmiya5iXUGzJaDqAZvGKQ" class="link-button">参加</a></td>
+                            <td>1日1問1答・勉強会案内</td>
+                        </tr>
+                        <tr>
+                            <td>💬 つぶやき部屋</td>
+                            <td><a href="https://line.me/ti/g2/SrwlPvoHSAYjHqQpO5yaEzt76Io1CFQ5Tk-6Kw" class="link-button">参加</a></td>
+                            <td>感想投稿・自習室利用報告</td>
+                        </tr>
+                        <tr>
+                            <td>📅 個別面談予約</td>
+                            <td><a href="https://liff.line.me/1661464295-gq06np84?calendar_salon_id=2787&ts=1748322247" class="link-button">予約</a></td>
+                            <td>月1回のコンサルティング予約</td>
+                        </tr>
+                        <tr>
+                            <td>📚 講義動画・資料</td>
+                            <td><a href="https://www.nurse-kazu.com/konntenntu-2/" class="link-button">アクセス</a></td>
+                            <td>動画視聴・資料ダウンロード（PW: nurse）</td>
+                        </tr>
+                        <tr>
+                            <td>🏠 オンライン自習室</td>
+                            <td><a href="https://us02web.zoom.us/j/5688610949?pwd=T1BLMzdZM2RwUklhL2VaazBubmlJQT09" class="link-button">入室</a></td>
+                            <td>24時間自習環境（つぶやき部屋で挨拶必須）</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="contact-section">
+                    <h3>❓ ご不明な点がございましたら</h3>
+                    <p>いつでもお気軽にご連絡ください！</p>
+                    <a href="https://lin.ee/xrvE6PC" class="link-button">📱 公式LINEで質問</a>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="service-content" id="faq">
+                <div class="service-header">
+                    <h2 class="service-title">❓ よくある質問（FAQ）</h2>
+                    <p class="service-subtitle">検索機能付きでスムーズに解決</p>
+                </div>
+
+                <div class="faq-section">
+                    <div class="search-container">
+                        <input type="text" class="search-input" placeholder="FAQ内を検索..." id="faqSearch">
+                    </div>
+
+                    <div class="faq-categories">
+                        <div class="faq-category active" data-category="service">
+                            📱 サービス利用方法
+                        </div>
+                        <div class="faq-category" data-category="payment">
+                            💰 料金・面談システム
+                        </div>
+                        <div class="faq-category" data-category="technical">
+                            🔧 技術的トラブル
+                        </div>
+                        <div class="faq-category" data-category="course">
+                            📚 コース変更・解約
+                        </div>
+                        <div class="faq-category" data-category="events">
+                            🎓 勉強会・イベント
+                        </div>
+                    </div>
+
+                    <div class="faq-items active" data-category="service">
+                        <div class="faq-item">
+                            <div class="faq-question">LINEサポートはどの程度まで質問できますか？</div>
+                            <div class="faq-answer">基本的に制限はありません。看護学に関することであれば、基礎的な内容から専門的な内容まで何でも質問可能です。理解できるまで何度でも深掘りしてサポートいたします。</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">1日1問1答の問題はどこで確認できますか？</div>
+                            <div class="faq-answer">オープンチャット「Nurse Path+」で毎日配信されます。チャット内で直接回答していただくと、現役看護師からフィードバックがもらえます。</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">講義動画のパスワードを忘れました</div>
+                            <div class="faq-answer">パスワードは「nurse」です。オープンチャット「Nurse Path+」のアナウンス部分でも確認できます。</div>
+                        </div>
+                    </div>
+
+                    <div class="faq-items" data-category="payment">
+                        <div class="faq-item">
+                            <div class="faq-question">面談の延長料金はどうなりますか？</div>
+                            <div class="faq-answer">30分を超える場合、予約タイミングにより1,500円〜1,875円の追加料金が発生します。3日前までの予約なら追加料金はありません。</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">無料面談の対象者は？</div>
+                            <div class="faq-answer">Nursepath生とNURSE WELLNESS生は月1回30分まで無料です。その他のコースは30分1,500円となります。</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">勉強会の参加費はかかりますか？</div>
+                            <div class="faq-answer">プレミアムコースの方は無料です。その他のコースの方は1回5,000円で参加できます。</div>
+                        </div>
+                    </div>
+
+                    <div class="faq-items" data-category="technical">
+                        <div class="faq-item">
+                            <div class="faq-question">ZOOMの接続がうまくいきません</div>
+                            <div class="faq-answer">まず最新版のZOOMアプリを使用しているか確認してください。問題が解決しない場合は公式LINEでサポートいたします。</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">講義動画が再生されません</div>
+                            <div class="faq-answer">ブラウザのキャッシュをクリアして再度お試しください。ChromeまたはSafariの最新版を推奨しています。</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">自習室のパスワードがわかりません</div>
+                            <div class="faq-answer">部屋番号：5688610949、パスワード：147359です。利用前は必ずつぶやき部屋で挨拶をお願いします。</div>
+                        </div>
+                    </div>
+
+                    <div class="faq-items" data-category="course">
+                        <div class="faq-item">
+                            <div class="faq-question">コース変更はできますか？</div>
+                            <div class="faq-answer">はい、可能です。公式LINEにてご相談ください。変更手続きをサポートいたします。</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">解約はいつでもできますか？</div>
+                            <div class="faq-answer">解約手続きについては公式LINEでご相談ください。詳細な手続き方法をご案内いたします。</div>
+                        </div>
+                    </div>
+
+                    <div class="faq-items" data-category="events">
+                        <div class="faq-item">
+                            <div class="faq-question">勉強会に参加できない場合はどうすればいいですか？</div>
+                            <div class="faq-answer">過去の勉強会動画がオープンチャットの「ノート」に保存されているので、いつでも復習できます。また、参加・不参加の回答は必須ですので、参加できない場合も必ず回答してください。</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question">専門イベントのスケジュールはどこで確認できますか？</div>
+                            <div class="faq-answer">毎月月末（30日頃）にオープンチャットで新しいスケジュール表をお渡しします。</div>
+                        </div>
+                    </div>
+
+                    <div class="contact-section">
+                        <h3>💬 解決しない場合は</h3>
+                        <p>FAQで解決しない問題は、公式LINEで詳細にサポートいたします</p>
+                        <a href="https://lin.ee/xrvE6PC" class="link-button">公式LINEで相談</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <a href="https://lin.ee/xrvE6PC" class="floating-help">💬</a>
+
+    <script>
+        // Service data
+        const services = {
+            'overview': { title: '概要', keywords: ['概要', 'サービス', '全体', 'まとめ', '合格率', '実績', '看護師チーム'] },
+            'line-support': { title: 'LINEサポート', keywords: ['LINE', 'サポート', '相談', '24時間', '質問', '1日1問', '回答', 'コア', '深掘り', '22名'] },
+            'daily-quiz': { title: '1日1問1答', keywords: ['1日1問', '問題', '配信', 'オープンチャット', '継続', '国試'] },
+            'consultation': { title: '個別面談', keywords: ['面談', 'コンサル', 'ZOOM', '個別', '相談', 'アセスメント', '勉強法', '学習プラン', '料金', '予約'] },
+            'study-sessions': { title: '勉強会', keywords: ['勉強会', 'ZOOM', '学習', '月3回', '参加', '不参加', '回答必須'] },
+            'ai-chat': { title: 'AIチャット', keywords: ['AI', 'チャット', 'ボット', '500円', 'オプション'] },
+            'content': { title: '講義動画', keywords: ['動画', '講義', '解剖学', '生理学', '40本', 'パスワード', 'nurse'] },
+            'quiz-files': { title: '問題ファイル', keywords: ['問題', 'ファイル', 'PowerPoint', '国試', '月1回', '配信'] },
+            'study-room': { title: '自習室', keywords: ['自習室', 'オンライン', 'ZOOM', '24時間', 'つぶやき部屋', '挨拶', '5688610949'] },
+            'events': { title: '専門イベント', keywords: ['イベント', '専門', '認定看護師', '講師', '特別講義'] },
+            'apps': { title: 'アプリ', keywords: ['アプリ', 'ベータ版', '開発中', '検査データ', '心電図', '血液ガス'] },
+            'links': { title: 'リンク一覧', keywords: ['リンク', 'URL', 'まとめ', '一覧', 'アクセス'] },
+            'faq': { title: 'FAQ', keywords: ['FAQ', '質問', '回答', 'よくある', 'トラブル', 'サポート'] }
+        };
+
+        // Navigation items
+        const navItems = [
+            { id: 'overview', icon: '🌟', title: '概要', desc: 'サービス全体・実績' },
+            { id: 'line-support', icon: '📱', title: 'LINEサポート', desc: '24時間365日対応' },
+            { id: 'daily-quiz', icon: '📝', title: '1日1問1答', desc: '毎日の継続学習' },
+            { id: 'consultation', icon: '🎯', title: '個別面談', desc: '学習プラン作成' },
+            { id: 'study-sessions', icon: '🎓', title: 'ZOOM勉強会', desc: '月3回開催' },
+            { id: 'ai-chat', icon: '🤖', title: 'AIチャット', desc: '追加オプション' },
+            { id: 'content', icon: '📚', title: '講義動画', desc: '40本以上見放題' },
+            { id: 'quiz-files', icon: '📋', title: '問題ファイル', desc: '月1回配信' },
+            { id: 'study-room', icon: '🏠', title: '自習室', desc: '24時間利用可能' },
+            { id: 'events', icon: '👩‍⚕️', title: '専門イベント', desc: '認定看護師講義' },
+            { id: 'apps', icon: '💻', title: 'アプリ', desc: '開発中ベータ版' },
+            { id: 'links', icon: '🔗', title: 'リンク一覧', desc: '各サービスアクセス' },
+            { id: 'faq', icon: '❓', title: 'FAQ', desc: '検索機能付き' }
+        ];
+
+        // Initialize navigation
+        function initializeNavigation() {
+            const navGrid = document.getElementById('navGrid');
+            navGrid.innerHTML = navItems.map(item => `
+                <div class="nav-card ${item.id === 'overview' ? 'active' : ''}" onclick="showContent('${item.id}')">
+                    <span class="nav-card-icon">${item.icon}</span>
+                    <h3 class="nav-card-title">${item.title}</h3>
+                    <p class="nav-card-desc">${item.desc}</p>
+                </div>
+            `).join('');
+        }
+
+        // Show content function
+        function showContent(contentId) {
+            // Hide all content
+            document.querySelectorAll('.service-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all nav cards
+            document.querySelectorAll('.nav-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Show selected content
+            const targetContent = document.getElementById(contentId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+            
+            // Add active class to selected nav card
+            const activeCard = document.querySelector(`[onclick="showContent('${contentId}')"]`);
+            if (activeCard) {
+                activeCard.classList.add('active');
+            }
+            
+            // Update breadcrumb
+            const currentPage = document.getElementById('currentPage');
+            const serviceData = services[contentId];
+            if (serviceData) {
+                currentPage.textContent = serviceData.title;
+            }
+            
+            // Smooth scroll to content
+            document.querySelector('.content').scrollIntoView({ behavior: 'smooth' });
+            
+            // Hide search results
+            document.getElementById('searchResults').style.display = 'none';
+        }
+
+        // Search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+
+            searchInput.addEventListener('input', function() {
+                const query = this.value.toLowerCase().trim();
+                
+                if (query.length === 0) {
+                    searchResults.style.display = 'none';
+                    return;
+                }
+
+                const matches = [];
+                Object.keys(services).forEach(key => {
+                    const service = services[key];
+                    if (service.title.toLowerCase().includes(query) || 
+                        service.keywords.some(keyword => keyword.toLowerCase().includes(query))) {
+                        matches.push({key, title: service.title});
+                    }
+                });
+
+                if (matches.length > 0) {
+                    searchResults.innerHTML = matches.map(match => 
+                        `<div class="search-result-item" onclick="showContent('${match.key}')">${match.title}</div>`
+                    ).join('');
+                    searchResults.style.display = 'block';
+                } else {
+                    searchResults.innerHTML = '<div class="search-result-item">該当するサービスが見つかりませんでした</div>';
+                    searchResults.style.display = 'block';
+                }
+            });
+
+            // Close search results when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+                    searchResults.style.display = 'none';
+                }
+            });
+        }
+
+        // FAQ functionality
+        function initializeFAQ() {
+            // Category switching
+            document.querySelectorAll('.faq-category').forEach(category => {
+                category.addEventListener('click', function() {
+                    const categoryType = this.dataset.category;
+                    
+                    // Remove active class from all categories and items
+                    document.querySelectorAll('.faq-category').forEach(cat => cat.classList.remove('active'));
+                    document.querySelectorAll('.faq-items').forEach(items => items.classList.remove('active'));
+                    
+                    // Add active class to selected category and items
+                    this.classList.add('active');
+                    document.querySelector(`.faq-items[data-category="${categoryType}"]`).classList.add('active');
+                });
+            });
+
+            // FAQ item toggling
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const isActive = answer.classList.contains('active');
+                    
+                    // Close all other FAQ answers
+                    document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.remove('active'));
+                    
+                    // Toggle current answer
+                    if (!isActive) {
+                        answer.classList.add('active');
+                    }
+                });
+            });
+
+            // FAQ search
+            const faqSearch = document.getElementById('faqSearch');
+            if (faqSearch) {
+                faqSearch.addEventListener('input', function() {
+                    const query = this.value.toLowerCase();
+                    const faqItems = document.querySelectorAll('.faq-item');
+                    
+                    faqItems.forEach(item => {
+                        const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                        const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                        
+                        if (question.includes(query) || answer.includes(query)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = query.length === 0 ? 'block' : 'none';
+                        }
+                    });
+                });
+            }
+        }
+
+        // Statistics animation
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const finalText = target.textContent;
+                        
+                        if (finalText.includes('%')) {
+                            animatePercentage(target, parseInt(finalText));
+                        } else if (finalText.includes('名')) {
+                            animateNumber(target, parseInt(finalText), '名');
+                        } else if (finalText.includes('+')) {
+                            animateNumber(target, parseInt(finalText), '+');
+                        }
+                        observer.unobserve(target);
+                    }
+                });
+            });
+
+            statNumbers.forEach(stat => observer.observe(stat));
+        }
+
+        function animateNumber(element, target, suffix = '') {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current) + suffix;
+            }, 30);
+        }
+
+        function animatePercentage(element, target) {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current) + '%';
+            }, 30);
+        }
+
+        // Smooth scrolling for anchor links
+        function initializeSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNavigation();
+            initializeSearch();
+            initializeFAQ();
+            initializeSmoothScrolling();
+            animateStats();
+            
+            // Add hover effects to cards
+            document.querySelectorAll('.card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.getElementById('searchResults').style.display = 'none';
+                document.querySelectorAll('.faq-answer').forEach(ans => ans.classList.remove('active'));
+            }
+        });
+    </script>
+</body>
+</html>
+                            
